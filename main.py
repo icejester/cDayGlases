@@ -8,25 +8,30 @@ import neopixel
 pixel_pin = board.D1
 num_pixels = 32
 SPEED = 20000
+
+EVENS = True
  
-pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.3, auto_write=False, pixel_order=(1, 0, 2, 3))
+pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=.03125, auto_write=False, pixel_order=(1, 0, 2, 3))
 
 # COLORS 
 RED = (255, 0, 0, 0)
 YELLOW = (255, 150, 0, 0)
 ORANGE = (255, 165, 0, 0)
 GREEN = (0, 255, 0, 0)
+DARKGREEN = (0, 135, 27, 0)
 WHITE = (255, 255, 255, 0)
 CYAN = (0, 255, 255, 0)
 BLUE = (0, 0, 255, 0)
 SKYBLUE = (135, 206, 250, 0)
-PURPLE = (180, 0, 255, 0)
+PURPLE = (90, 0, 127, 0)
 BLACK = (0, 0, 0, 0)
 INDIGO = (63, 81, 181, 0)
 VIOLET = (238, 130, 238, 0)
-LOWWHITE = (4, 4, 4, 4)
-LOWRED = (4, 0, 0, 0)
-LOWBLUE = (0, 0, 4, 0)
+LOWWHITE = (60, 60, 60, 60)
+LOWRED = (60, 0, 0, 0)
+LOWBLUE = (0, 0, 127, 0)
+PINK = (150, 0, 150, 22)
+MAGENTA = (250, 0, 255, 0)
 
 flippity = LOWRED
 
@@ -34,8 +39,10 @@ flippity = LOWRED
 LIGHTNING = [WHITE, CYAN, SKYBLUE, BLUE, PURPLE]
 FIRE = [RED, YELLOW, BLACK, ORANGE]
 USA = [LOWRED, LOWWHITE, LOWBLUE, BLACK]
-CANADA = [LOWWHITE, LOWRED, BLACK]
-RAINBOW = [RED, ORANGE, YELLOW, GREEN, BLUE, INDIGO, VIOLET]
+CANADA = [RED, WHITE, RED, WHITE, RED, WHITE, RED]
+LOWCANADA = [LOWRED, LOWWHITE, LOWRED, LOWWHITE, LOWRED, LOWWHITE, LOWRED]
+RAINBOW = [RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE]
+LUNA = [RED, DARKGREEN, ORANGE, BLUE, PURPLE, PINK, MAGENTA]
 
 # functions
 def burst(aPixel):
@@ -80,37 +87,43 @@ def multiPalletBurst(aPixel, aPallet):
         pixels[aPixel] = aPallet[aColor]
         pixels.show()
         # time.sleep(miniBurst)
-    pixels[aPixel] = BLACK
+    # pixels[aPixel] = BLACK
     pixels.show
 
 def manyMultiPalletBurst(aPallet):
     numColors = len(aPallet)
     
-    for aColor in range(numColors):
+    for aColor in range(1):
         
         for i in range(len(pixels)):
             # select the "even" pixels
-            if(i % 2 == 0):
-                color = aPallet[random.randint(0, numColors-1)]
+            if EVENS == True:
+                if(i % 2 == 0):
+                    color = aPallet[random.randint(0, numColors-1)]
+                else:
+                    color = BLACK
             else:
-                color = aPallet[random.randint(0, numColors-1)]
+                if(i % 2 == 0):
+                    color = BLACK
+                else:
+                    color = aPallet[random.randint(0, numColors-1)]
+                    
             
             pixels[i] = color
-            # print("pixel ", i, "is set to ", color)
-            # time.sleep(.0625)
-
-        # print("showing...")
+            
         pixels.show()
-        # time.sleep(.0078)
-    
+        
 # MAIN LOOP (near as I can tell)
 while True:
-    # for anOrderedPixel in pixels:
-    #    pixelPos = random.randint(0, (num_pixels-1))
-    #    multiPalletBurst(pixelPos, USA)
-    #manyMultiPalletBurst(FIRE)
-    #manyMultiPalletBurst(CANADA)
-    #manyMultiPalletBurst(LIGHTNING)
+    # manyMultiPalletBurst(FIRE)
+    # manyMultiPalletBurst(LOWCANADA)
+    # manyMultiPalletBurst(CANADA)
     manyMultiPalletBurst(USA)
-    #manyMultiPalletBurst(RAINBOW)
+    # manyMultiPalletBurst(LIGHTNING)
+    # manyMultiPalletBurst(LUNA)
+    # manyMultiPalletBurst(RAINBOW)
+    if EVENS == True:
+        EVENS = False
+    else:
+        EVENS = True
     
